@@ -84,7 +84,7 @@ export default class DateWidget extends React.Component<
             autoComplete="false"
             name={`${id}Month`}
             id={`${id}Month`}
-            value={month}
+            value={month? month.replace(/^0/,"") : undefined}
             onChange={event => this.handleChange("month", event.target.value)}
           >
             <option value="" />
@@ -104,7 +104,7 @@ export default class DateWidget extends React.Component<
               autoComplete="false"
               name={`${id}Day`}
               id={`${id}Day`}
-              value={day}
+              value={day? day.replace(/^0/,"") : undefined}
               onChange={event => this.handleChange("day", event.target.value)}
             >
               <option value="" />

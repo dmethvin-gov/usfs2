@@ -1,0 +1,23 @@
+{
+  "name": "US Forms System",
+  "description": "Quickly build large accessible forms",
+  "author": "",
+  "license": "CC0-1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmethvin/usfs2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dmethvin/usfs2/issues"
+  },
+  "homepage": "https://github.com/dmethvin/usfs2#readme",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "lerna": "^3.4.3"
+  }
+}

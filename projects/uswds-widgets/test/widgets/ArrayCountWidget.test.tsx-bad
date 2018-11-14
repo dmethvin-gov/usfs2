@@ -1,0 +1,164 @@
+import React from 'react';
+import { mount } from 'enzyme';
+import ArrayCountWidget from '../../src/widgets/ArrayCountWidget';
+
+function noop(){};
+
+describe('<ArrayCountWidget/>', () => {
+  it('should render with the right count', () => {
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={noop}
+        options={{}}
+      />
+    );
+    expect((tree.find("input").getDOMNode() as any).value).toBe("2");
+  });
+  it('should render with the right count with offset', () => {
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={noop}
+        options={{ countOffset: -1 }}
+      />
+    );
+    expect((tree.find("input").getDOMNode() as any).value).toBe("3");
+  });
+  it('should render 0 if array is empty', () => {
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[]}
+        required
+        disabled={false}
+        onChange={noop}
+        options={{}}
+      />
+    );
+    expect((tree.find("input").getDOMNode() as any).value).toBe("0");
+  });
+  it('should handle change that adds items', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe([{}, {}, {}]);
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{}}
+      />
+    );
+    tree.find("input").simulate("change", { target: { value: "3" }});
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle change that adds items with offset', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe([{},{}]);
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{ countOffset: -1 }}
+      />
+    );
+    tree.find("input").simulate("change", { target: { value: "1" }});
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle change that removes items', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe([{}]);
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{}}
+      />
+    );
+    tree.find("input").simulate("change");
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle change that removes all items', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe(undefined);
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{}}
+      />
+    );
+    tree.find("input").simulate("change");
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle change that removes with offset', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe([{}]);
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{ countOffset: -2 }}
+      />
+    );
+    tree.find("input").simulate("change");
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle change that removes all offset', () => {
+    const onChange = jest.fn(v => {
+      expect(v).toBe("1");
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        value={[{}, {}]}
+        required
+        disabled={false}
+        onChange={onChange}
+        options={{ countOffset: -1 }}
+      />
+    );
+    tree.find("input").simulate("change");
+    expect(onChange.mock.calls.length).toBe(1);
+  });
+  it('should handle blur', () => {
+    const onBlur = jest.fn(v => {
+      expect(v).toBe("test");
+    });
+    const tree = mount(
+      <ArrayCountWidget
+        id="test"
+        required
+        disabled={false}
+        onChange={noop}
+        onBlur={onBlur}
+        options={{}}
+      />
+    );
+    tree.find("input").simulate("blur");
+    expect(onBlur.mock.calls.length).toBe(1);
+  });
+});

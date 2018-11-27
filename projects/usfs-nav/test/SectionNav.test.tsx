@@ -26,15 +26,16 @@ describe('<SectionNav/>', () => {
     expect(buttons.at(1).text()).toBe("Next");
     tree.unmount();
   });
-  it('should render custom button labels', () => {
+  it('should render custom button labels and title', () => {
     const tree = mount(
-      <SectionNav currentRoute={routes[1]} navigateTo={navOK} routeList={routes} LanguageContext={someLang}>
+      <SectionNav currentRoute={routes[1]} navigateTo={navOK} routeList={routes} navTitle="Hey There!" LanguageContext={someLang}>
         <div className="form">Form Content</div>
       </SectionNav>
     );
     const buttons = tree.find("button");
     expect(buttons.at(0).text()).toBe(someLang.backLabel);
     expect(buttons.at(1).text()).toBe(someLang.nextLabel);
+    expect(tree.find("#usfs-route-nav-title").text()).toBe("Hey There!");
     tree.unmount();
   });
   it('should navigate on Back or Next', () => {

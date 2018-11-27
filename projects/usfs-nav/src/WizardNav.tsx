@@ -19,11 +19,9 @@ export default function WizardNav({
 }: WizardNavProps) {
   const currentIndex = routeList.indexOf(currentRoute);
   const goNext = currentIndex >= routeList.length - 1 ?
-      undefined :
-      () => navigateTo(routeList[currentIndex + 1]);
+      undefined : () => navigateTo(routeList[currentIndex + 1]);
   const goBack = currentIndex <= 0 ?
-      undefined :
-      () => navigateTo(routeList[currentIndex - 1]);
+      undefined : () => navigateTo(routeList[currentIndex - 1]);
 
   return (
     <RouteGroup goNext={goNext} goBack={goBack} nextLabel={lang.nextLabel} backLabel={lang.backLabel}>

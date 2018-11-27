@@ -25,10 +25,7 @@ export default function SectionNav({
   const goBack = currentIndex <= 0 ?
       undefined : () => navigateTo(routeList[currentIndex - 1]);
   const navTo = (index: number) =>
-    (e: any) => {
-      e.stopPropagation();
-      navigateTo(routeList[index]);
-    }
+      (e: any) => { e.stopPropagation(); navigateTo(routeList[index]); }
   return (
     <>
     <nav className="route-nav" aria-labelledby="route-nav-title">

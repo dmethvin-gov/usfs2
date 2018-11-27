@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import LinearWizard from '../../src/containers/LinearWizard';
+import WizardNav from '../src/WizardNav';
 
 function navOK(route: Object){ return true; };
 
@@ -13,12 +13,12 @@ const routes = [
 
 const someLang = { backLabel: "Retreat", nextLabel: "Advance" };
 
-describe('<LinearWizard/>', () => {
+describe('<WizardNav/>', () => {
   it('should render defaults', () => {
     const tree = mount(
-      <LinearWizard currentRoute={routes[1]} navigateTo={navOK} routeList={routes}>
+      <WizardNav currentRoute={routes[1]} navigateTo={navOK} routeList={routes}>
         <div className="form">Form Content</div>
-      </LinearWizard>
+      </WizardNav>
     );
     expect(tree.find("div.form").text()).toBe("Form Content");
     const buttons = tree.find("button");
@@ -27,9 +27,9 @@ describe('<LinearWizard/>', () => {
   });
   it('should render custom button labels', () => {
     const tree = mount(
-      <LinearWizard currentRoute={routes[1]} navigateTo={navOK} routeList={routes} LanguageContext={someLang}>
+      <WizardNav currentRoute={routes[1]} navigateTo={navOK} routeList={routes} LanguageContext={someLang}>
         <div className="form">Form Content</div>
-      </LinearWizard>
+      </WizardNav>
     );
     const buttons = tree.find("button");
     expect(buttons.at(0).text()).toBe("Retreat");
@@ -41,9 +41,9 @@ describe('<LinearWizard/>', () => {
       expect(r.name).toBe(nextName);
     });
     const tree = mount(
-      <LinearWizard currentRoute={routes[1]} navigateTo={navTo} routeList={routes}>
+      <WizardNav currentRoute={routes[1]} navigateTo={navTo} routeList={routes}>
         <div className="form">Form Content</div>
-      </LinearWizard>
+      </WizardNav>
     );
     const buttons = tree.find("button");
     nextName = "page1";
@@ -54,18 +54,18 @@ describe('<LinearWizard/>', () => {
   });
   it('should not show Back on first route', () => {
     const tree = mount(
-      <LinearWizard currentRoute={routes[0]} navigateTo={navOK} routeList={routes}>
+      <WizardNav currentRoute={routes[0]} navigateTo={navOK} routeList={routes}>
         <div className="form">Form Content</div>
-      </LinearWizard>
+      </WizardNav>
     );
     expect(tree.find("button").length).toBe(1);
     expect(tree.find("button").text()).toBe("Next");
   });
   it('should not show Next on last route', () => {
     const tree = mount(
-      <LinearWizard currentRoute={routes[routes.length-1]} navigateTo={navOK} routeList={routes}>
+      <WizardNav currentRoute={routes[routes.length-1]} navigateTo={navOK} routeList={routes}>
         <div className="form">Form Content</div>
-      </LinearWizard>
+      </WizardNav>
     );
     expect(tree.find("button").length).toBe(1);
     expect(tree.find("button").text()).toBe("Back");

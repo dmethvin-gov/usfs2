@@ -1,22 +1,22 @@
 import React, { ReactNode } from "react";
-import { BaseWidgetProps } from "../types";
-import RouteGroup from "../../../uswds-widgets/src/widgets/RouteGroup";
+import RouteGroup from "./RouteGroup";
 
-export interface LinearWizardProps {
-  currentRoute: Object;
-  navigateTo: (route: Object) => boolean;
-  routeList: Array<Object>;
+export interface WizardNavProps {
+  // TODO types
+  currentRoute: any;
+  navigateTo: (route: any) => boolean;
+  routeList: Array<any>;
   LanguageContext?: any;
   children: ReactNode;
 };
 
-export default function LinearWizard({
+export default function WizardNav({
   currentRoute,
   routeList,
   navigateTo,
   LanguageContext: lang = {},
   children
-}: LinearWizardProps) {
+}: WizardNavProps) {
   const currentIndex = routeList.indexOf(currentRoute);
   const goNext = currentIndex >= routeList.length - 1 ?
       undefined :

@@ -26,6 +26,6 @@ module.exports = {
   },
   "collectCoverage": true,
   "collectCoverageFrom": [
-    "src/containers/*.tsx"
+    "src/*.tsx"
   ]
 }

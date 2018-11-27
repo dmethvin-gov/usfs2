@@ -28,10 +28,10 @@ export default function SectionNav({
       (e: any) => { e.stopPropagation(); navigateTo(routeList[index]); }
   return (
     <>
-    <nav className="route-nav" aria-labelledby="route-nav-title">
-      <h2 id="route-nav-title">{navTitle}</h2>
+    <nav className="usfs-route-nav" aria-labelledby="usfs-route-nav-title">
+      <h2 id="usfs-route-nav-title">{navTitle}</h2>
       {routeList.map((route, i) =>
-        <a key={route.route} href={route.route} onClick={navTo(i)}>{route.name}</a>
+        <a key={route.route} className={i == currentIndex ? "usfs-active-route" : ""} href={route.route} onClick={navTo(i)}>{route.name}</a>
       )}
     </nav>
     <RouteGroup goNext={goNext} goBack={goBack} nextLabel={lang.nextLabel} backLabel={lang.backLabel}>

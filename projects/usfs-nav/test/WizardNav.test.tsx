@@ -24,6 +24,7 @@ describe('<WizardNav/>', () => {
     const buttons = tree.find("button");
     expect(buttons.at(0).text()).toBe("Back");
     expect(buttons.at(1).text()).toBe("Next");
+    tree.unmount();
   });
   it('should render custom button labels', () => {
     const tree = mount(
@@ -34,6 +35,7 @@ describe('<WizardNav/>', () => {
     const buttons = tree.find("button");
     expect(buttons.at(0).text()).toBe("Retreat");
     expect(buttons.at(1).text()).toBe("Advance");
+    tree.unmount();
   });
   it('should navigate on Back or Next', () => {
     let nextName: string;
@@ -51,6 +53,7 @@ describe('<WizardNav/>', () => {
     nextName = "page3";
     buttons.at(1).simulate("click");
     expect(navTo.mock.calls.length).toBe(2);
+    tree.unmount();
   });
   it('should not show Back on first route', () => {
     const tree = mount(
@@ -60,6 +63,7 @@ describe('<WizardNav/>', () => {
     );
     expect(tree.find("button").length).toBe(1);
     expect(tree.find("button").text()).toBe("Next");
+    tree.unmount();
   });
   it('should not show Next on last route', () => {
     const tree = mount(
@@ -69,5 +73,6 @@ describe('<WizardNav/>', () => {
     );
     expect(tree.find("button").length).toBe(1);
     expect(tree.find("button").text()).toBe("Back");
+    tree.unmount();
   });
 });

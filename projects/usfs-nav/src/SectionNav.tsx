@@ -24,14 +24,13 @@ export default function SectionNav({
       undefined : () => navigateTo(routeList[currentIndex + 1]);
   const goBack = currentIndex <= 0 ?
       undefined : () => navigateTo(routeList[currentIndex - 1]);
-  const navTo = (index: number) =>
-      (e: any) => { e.stopPropagation(); navigateTo(routeList[index]); }
+
   return (
     <>
     <nav className="usfs-route-nav" aria-labelledby="usfs-route-nav-title">
       <h2 id="usfs-route-nav-title">{navTitle}</h2>
       {routeList.map((route, i) =>
-        <a key={route.route} className={i == currentIndex ? "usfs-active-route" : ""} href={route.route} onClick={navTo(i)}>{route.name}</a>
+        <a key={route.route} className={i == currentIndex ? "usfs-active-route" : ""} href={route.route} onClick={e => navigateTo(routeList[i])}>{route.name}</a>
       )}
     </nav>
     <RouteGroup goNext={goNext} goBack={goBack} nextLabel={lang.nextLabel} backLabel={lang.backLabel}>

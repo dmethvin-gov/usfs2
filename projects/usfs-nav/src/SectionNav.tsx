@@ -25,6 +25,7 @@ export default function SectionNav({
   const goBack = currentIndex <= 0 ?
       undefined : () => navigateTo(routeList[currentIndex - 1]);
 
+  //TODO: mark routes based on validation state and whether they've been touched
   return (
     <>
     <nav className="usfs-route-nav" aria-labelledby="usfs-route-nav-title">

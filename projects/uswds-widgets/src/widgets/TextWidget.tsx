@@ -10,25 +10,33 @@ export type TextWidgetProps = BaseWidgetProps & {
   options?: {
     widgetClassNames?: string|undefined;
   };
-  onChange: (value: string|undefined) => void;
-  onBlur: (value: string) => void;
+  onChange: (value: string|undefined) => undefined;
+  onBlur?: (value: string) => undefined;
 };
 
-export default function TextWidget(props: TextWidgetProps) {
-  const options = props.options || {};
-
+export default function TextWidget({
+  type,
+  id,
+  disabled,
+  maxLength,
+  autocomplete,
+  value,
+  onBlur,
+  onChange,
+  options
+}: TextWidgetProps) {
   return (
     <input
-      type={props.type || "text"}
-      id={props.id}
-      name={props.id}
-      disabled={props.disabled}
-      maxLength={props.maxLength}
-      autoComplete={String(props.autocomplete || false)}
-      className={options.widgetClassNames}
-      value={props.value === undefined ? "" : props.value}
-      onBlur={() => props.onBlur(props.id)}
-      onChange={e => props.onChange(e.target.value || undefined)
+      type={type || "text"}
+      id={id}
+      name={id}
+      disabled={disabled}
+      maxLength={maxLength}
+      autoComplete={String(autocomplete || false)}
+      className={options? options.widgetClassNames : undefined}
+      value={value === undefined ? "" : value}
+      onBlur={onBlur ? (() => onBlur(id)) : undefined}
+      onChange={e => onChange(e.target.value || undefined)
       }
     />
   );

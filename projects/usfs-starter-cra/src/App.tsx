@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import 'uswds-widgets/dist/lib/css/styles.css';
+import './scss/styles.scss';
 
 // Typical header and footer just to show how it would be used
 // Normally we'd import these from somewhere

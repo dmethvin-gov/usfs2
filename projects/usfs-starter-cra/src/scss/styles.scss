@@ -1,0 +1,36 @@
+@import "~uswds/src/stylesheets/lib/bourbon";
+@import "~uswds/src/stylesheets/lib/neat";
+@import "~uswds/src/stylesheets/lib/normalize"; // Currently 3.0.3
+
+@import "~uswds/src/stylesheets/core/variables";
+
+// Demonstrates how to override USWDS settings and breakpoints
+@import "base/b-variables";
+@import "base/b-breakpoints";
+
+@import "~uswds/src/stylesheets/core/fonts";
+@import "~uswds/src/stylesheets/core/grid";
+@import "~uswds/src/stylesheets/core/utilities";
+@import "~uswds/src/stylesheets/core/base";
+
+// ---- U.S. WEB DESIGN STANDARDS ELEMENTS/COMPONENTS --- //
+@import "~uswds/src/stylesheets/elements/buttons";
+@import "~uswds/src/stylesheets/elements/inputs";
+@import "~uswds/src/stylesheets/elements/labels";
+@import "~uswds/src/stylesheets/elements/table";
+@import "~uswds/src/stylesheets/elements/typography";
+@import "~uswds/src/stylesheets/components/accordions";
+@import "~uswds/src/stylesheets/components/alerts";
+@import "~uswds/src/stylesheets/components/banner";
+@import "~uswds/src/stylesheets/components/footer";
+@import "~uswds/src/stylesheets/components/forms";
+@import "~uswds/src/stylesheets/components/header";
+@import "~uswds/src/stylesheets/components/navigation";
+@import "~uswds/src/stylesheets/components/sidenav";
+
+@import "modules/m-form-layout";
+@import "modules/m-form-confirmation";
+@import "modules/m-form-elements";
+@import "modules/m-form-process";
+@import "modules/m-progress-bar";
+@import "modules/m-schemaform";

@@ -10,7 +10,7 @@ export type TextWidgetProps = BaseWidgetProps & {
   options?: {
     widgetClassNames?: string|undefined;
   };
-  onChange: (value: string|undefined) => undefined;
+  onChange: (value: string|undefined) => void;
   onBlur?: (value: string) => undefined;
 };
 
@@ -36,8 +36,7 @@ export default function TextWidget({
       className={options? options.widgetClassNames : undefined}
       value={value === undefined ? "" : value}
       onBlur={onBlur ? (() => onBlur(id)) : undefined}
-      onChange={e => onChange(e.target.value || undefined)
-      }
+      onChange={e => onChange(e.target.value || undefined)}
     />
   );
 }

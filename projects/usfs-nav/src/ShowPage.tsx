@@ -1,6 +1,6 @@
 
 import React, { ReactNode } from "react";
-import { PageProps } from './types.d';
+import { PageProps } from './types';
 
 // this would be passed to ShowPage via props
 import Pg01_YourInfo from './Pg01_YourInfo';

@@ -2,6 +2,7 @@
 
 export type BaseWidgetProps = {
   id: string;
+  name?: string;
   label?: string|undefined;
   required?: boolean;
   disabled?: boolean;

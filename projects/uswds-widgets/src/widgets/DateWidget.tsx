@@ -8,9 +8,9 @@ export interface DateWidgetProps extends BaseWidgetProps {
   value?: string;
   options?: {
     monthYear?: boolean;
-    widgetClassNames?: string|undefined;
-    autocomplete?: boolean|undefined;
-    title?: string|undefined;
+    widgetClassNames?: string;
+    autocomplete?: boolean;
+    title?: string;
   }
 };
 
@@ -67,7 +67,7 @@ export default class DateWidget extends React.Component<
     );
   }
   render() {
-    const { id, options = {} } = this.props;
+    const { id, name, options = {} } = this.props;
     const { month, day, year } = this.state;
     let daysInMonth;
     const monthYear = options.monthYear;
@@ -82,7 +82,7 @@ export default class DateWidget extends React.Component<
           </label>
           <select
             autoComplete="false"
-            name={`${id}Month`}
+            name={`${name || id}Month`}
             id={`${id}Month`}
             value={month? month.replace(/^0/,"") : undefined}
             onChange={event => this.handleChange("month", event.target.value)}
@@ -102,7 +102,7 @@ export default class DateWidget extends React.Component<
             </label>
             <select
               autoComplete="false"
-              name={`${id}Day`}
+              name={`${name || id}Day`}
               id={`${id}Day`}
               value={day? day.replace(/^0/,"") : undefined}
               onChange={event => this.handleChange("day", event.target.value)}
@@ -124,7 +124,7 @@ export default class DateWidget extends React.Component<
           <input
             type="number"
             autoComplete="false"
-            name={`${id}Year`}
+            name={`${name || id}Year`}
             id={`${id}Year`}
             max="3000"
             min="1900"

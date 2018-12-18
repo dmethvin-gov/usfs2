@@ -15,6 +15,7 @@ export interface YesNoWidgetProps extends BaseWidgetProps {
 
 export default function YesNoWidget({
   id,
+  name,
   value,
   disabled,
   onChange,
@@ -30,7 +31,7 @@ export default function YesNoWidget({
         autoComplete="false"
         checked={value === yesValue}
         id={`${id}Yes`}
-        name={`${id}`}
+        name={name || id}
         value="Y"
         disabled={disabled}
         onChange={_ => onChange(yesValue)}
@@ -41,7 +42,7 @@ export default function YesNoWidget({
         autoComplete="false"
         checked={value === noValue}
         id={`${id}No`}
-        name={`${id}`}
+        name={name || id}
         value="N"
         disabled={disabled}
         onChange={_ => onChange(noValue)}

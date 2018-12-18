@@ -14,6 +14,7 @@ export interface CheckboxWidgetProps extends BaseWidgetProps {
 
 export default function CheckboxWidget({
   id,
+  name,
   required,
   value,
   disabled,
@@ -26,7 +27,7 @@ export default function CheckboxWidget({
     <div className={classNames('form-checkbox', options.widgetClassNames)}>
       <input type="checkbox"
         id={id}
-        name={id}
+        name={name || id}
         checked={value}
         required={required}
         disabled={disabled}

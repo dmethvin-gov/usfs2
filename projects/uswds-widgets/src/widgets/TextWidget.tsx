@@ -17,6 +17,7 @@ export interface TextWidgetProps extends BaseWidgetProps {
 export default function TextWidget({
   type,
   id,
+  name,
   disabled,
   maxLength,
   autocomplete,
@@ -29,7 +30,7 @@ export default function TextWidget({
     <input
       type={type || "text"}
       id={id}
-      name={id}
+      name={name || id}
       disabled={disabled}
       maxLength={maxLength}
       autoComplete={String(autocomplete || false)}

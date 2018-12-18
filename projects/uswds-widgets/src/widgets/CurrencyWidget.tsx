@@ -2,11 +2,11 @@ import React from "react";
 import { BaseWidgetProps } from "../types";
 
 export interface CurrencyWidgetProps extends BaseWidgetProps {
-  value?: number|string|undefined;
+  value?: number|string;
   options?: {
-    widgetClassNames?: string|undefined;
-    autocomplete?: boolean|undefined;
-    title?: string|undefined;
+    widgetClassNames?: string;
+    autocomplete?: boolean;
+    title?: string;
   }
   onBlur: (value: number|string|undefined) => void;
   onChange: (value: number|string|undefined) => void;
@@ -54,13 +54,13 @@ export default class CurrencyWidget extends React.Component<
     this.setState({ value: val });
   };
   render() {
-    const { id, disabled, options = {} } = this.props;
+    const { id, name, disabled, options = {} } = this.props;
     const value = this.state.value;
     return (
       <input
         type="text"
         id={id}
-        name={id}
+        name={name || id}
         disabled={disabled}
         autoComplete={String(options.autocomplete || false)}
         className={options.widgetClassNames}

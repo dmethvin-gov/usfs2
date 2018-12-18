@@ -5,10 +5,10 @@ export interface RadioWidgetProps extends BaseWidgetProps {
   value?: string;
   options: {
     enumOptions: { value: string|number; label: string; }[];
-    labels?: {[key: string]: string};
-    widgetClassNames?: string|undefined;
-    autocomplete?: boolean|undefined;
-    title?: string|undefined;
+    labels?: { [key: string]: string };
+    widgetClassNames?: string;
+    autocomplete?: boolean;
+    title?: string;
   }
   onChange: (value: string|undefined) => void;
 };
@@ -18,7 +18,8 @@ export default function RadioWidget({
   value,
   disabled,
   onChange,
-  id
+  id,
+  name
 }: RadioWidgetProps) {
   const { enumOptions, labels = {} } = options;
 
@@ -33,7 +34,7 @@ export default function RadioWidget({
               autoComplete="false"
               checked={checked}
               id={`${id}_${i}`}
-              name={`${id}`}
+              name={`${name || id}`}
               value={option.value}
               disabled={disabled}
               onChange={_ => onChange(String(option.value))}

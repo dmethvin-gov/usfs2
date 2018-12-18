@@ -2,7 +2,7 @@ import React from "react";
 import { formatISOPartialDate, parseISODate, monthInfo, ISODateParts } from "../utilities/dates";
 import { BaseWidgetProps } from "../types";
 
-export type DateWidgetProps = BaseWidgetProps & {
+export interface DateWidgetProps extends BaseWidgetProps {
   onChange: (value: string|undefined) => void;
   onBlur: (id: string) => void;
   value?: string;

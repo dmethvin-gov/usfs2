@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { BaseWidgetProps } from '../types';
 
-export type CheckboxWidgetProps = BaseWidgetProps & {
+export interface CheckboxWidgetProps extends BaseWidgetProps {
   value?: boolean;
   options?: {
     widgetClassNames?: string;

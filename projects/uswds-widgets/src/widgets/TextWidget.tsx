@@ -3,7 +3,7 @@ import { BaseWidgetProps } from '../types';
 
 //TODO: widgets should not know these details, pass them in
 
-export type TextWidgetProps = BaseWidgetProps & {
+export interface TextWidgetProps extends BaseWidgetProps {
   value?: string|undefined;
   type?: string;
   maxLength?: number;
@@ -11,7 +11,7 @@ export type TextWidgetProps = BaseWidgetProps & {
     widgetClassNames?: string|undefined;
   };
   onChange: (value: string|undefined) => void;
-  onBlur?: (value: string) => undefined;
+  onBlur?: (value: string) => void;
 };
 
 export default function TextWidget({

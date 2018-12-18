@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseWidgetProps } from "../types";
 
-export type SelectWidgetProps = BaseWidgetProps & {
+export interface SelectWidgetProps extends BaseWidgetProps {
   value?: string|string[];
   multiple?: boolean;
   options: {

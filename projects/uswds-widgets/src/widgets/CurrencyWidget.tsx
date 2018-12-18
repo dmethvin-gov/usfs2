@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseWidgetProps } from "../types";
 
-export type CurrencyWidgetProps = BaseWidgetProps & {
+export interface CurrencyWidgetProps extends BaseWidgetProps {
   value?: number|string|undefined;
   options?: {
     widgetClassNames?: string|undefined;

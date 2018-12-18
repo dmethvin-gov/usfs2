@@ -1,6 +1,6 @@
 
 
-export type BaseWidgetProps = {
+export interface BaseWidgetProps {
   id: string;
   name?: string;
   label?: string|undefined;

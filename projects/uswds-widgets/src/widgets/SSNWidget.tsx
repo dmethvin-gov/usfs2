@@ -2,7 +2,7 @@ import React from "react";
 import TextWidget from "./TextWidget";
 import { TextWidgetProps } from './TextWidget';
 
-export type SSNWidgetProps = TextWidgetProps;
+export interface SSNWidgetProps extends TextWidgetProps {};
 
 type SSNWidgetState = {
   val: any;

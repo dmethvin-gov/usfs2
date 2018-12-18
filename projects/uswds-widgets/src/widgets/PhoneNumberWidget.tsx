@@ -2,9 +2,9 @@ import React from "react";
 import TextWidget from "./TextWidget";
 import { TextWidgetProps } from './TextWidget';
 
-export type PhoneNumberWidgetProps = TextWidgetProps;
+export interface PhoneNumberWidgetProps extends TextWidgetProps {};
 
-type PhoneNumberWidgetState = {
+interface PhoneNumberWidgetState {
   val: string|undefined;
 };
 

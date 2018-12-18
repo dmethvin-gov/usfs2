@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseWidgetProps } from "../types";
 
-export type RadioWidgetProps = BaseWidgetProps & {
+export interface RadioWidgetProps extends BaseWidgetProps {
   value?: string;
   options: {
     enumOptions: { value: string|number; label: string; }[];

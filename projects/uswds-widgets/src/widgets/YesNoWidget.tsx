@@ -1,7 +1,7 @@
 import React from "react";
 import { BaseWidgetProps } from "../types";
 
-export type YesNoWidgetProps = BaseWidgetProps & {
+export interface YesNoWidgetProps extends BaseWidgetProps {
   value?: boolean;
   options?: {
     yesNoReverse?: boolean;

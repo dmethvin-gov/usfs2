@@ -2,10 +2,10 @@ import React from "react";
 import TextWidget from "./TextWidget";
 import { TextWidgetProps } from './TextWidget';
 
-export type PhoneNumberWidgetProps = TextWidgetProps;
+export interface EmailWidgetProps = TextWidgetProps;
 
 export default function EmailWidget(
-  props: PhoneNumberWidgetProps
+  props: EmailWidgetProps
 ) {
   return <TextWidget type="email" {...props} />;
 }

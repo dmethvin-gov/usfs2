@@ -6,9 +6,9 @@ export interface YesNoWidgetProps extends BaseWidgetProps {
   options?: {
     yesNoReverse?: boolean;
     labels?: { Y?: string; N?: string; }
-    widgetClassNames?: string|undefined;
-    autocomplete?: boolean|undefined;
-    title?: string|undefined;
+    widgetClassNames?: string;
+    autocomplete?: boolean;
+    title?: string;
   }
   onChange: (value: boolean) => void;
 };

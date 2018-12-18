@@ -5,7 +5,7 @@ export interface YesNoWidgetProps extends BaseWidgetProps {
   value?: boolean;
   options?: {
     yesNoReverse?: boolean;
-    labels?: { Y: string; N: string; }
+    labels?: { Y?: string; N?: string; }
     widgetClassNames?: string|undefined;
     autocomplete?: boolean|undefined;
     title?: string|undefined;
@@ -21,7 +21,7 @@ export default function YesNoWidget({
   onChange,
   options = {}
 }: YesNoWidgetProps) {
-  const { yesNoReverse = false, labels = { Y: "", N: "" } } = options;
+  const { yesNoReverse = false, labels = {} } = options;
   const yesValue = !yesNoReverse;
   const noValue = !yesValue;
   return (

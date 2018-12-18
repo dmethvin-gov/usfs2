@@ -4,11 +4,11 @@ import { BaseWidgetProps } from '../types';
 //TODO: widgets should not know these details, pass them in
 
 export interface TextWidgetProps extends BaseWidgetProps {
-  value?: string|undefined;
+  value?: string;
   type?: string;
   maxLength?: number;
   options?: {
-    widgetClassNames?: string|undefined;
+    widgetClassNames?: string;
   };
   onChange: (value: string|undefined) => void;
   onBlur?: (value: string) => void;

@@ -27,25 +27,25 @@ describe('<SSNWidget/>', () => {
     tree.unmount();
   });
   it('should call onChange and onBlur', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe("234567890");
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe("234567890");
     });
-    const onBlur = jest.fn(v => {
-      expect(v).toBe("test");
+    const onBlur = jest.fn((id, name, value, event) => {
+      expect(value).toBe("234567890");
     })
     const tree = mount(
       <SSNWidget id="test" value="234-56-7890" onChange={onChange} onBlur={onBlur}/>
     );
     const input = tree.find('input');
-    input.simulate("blur");
     input.simulate("change");
-    expect(onBlur.mock.calls.length).toBe(1);
+    input.simulate("blur");
     expect(onChange.mock.calls.length).toBe(1);
+    expect(onBlur.mock.calls.length).toBe(1);
     tree.unmount();
   });
   it('should use undefined for onChange on empty input', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe(undefined);
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe(undefined);
     });
     const tree = mount(
       <SSNWidget id="test" onChange={onChange} onBlur={noop}/>

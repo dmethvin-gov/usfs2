@@ -10,8 +10,6 @@ export interface TextWidgetProps extends BaseWidgetProps {
   options?: {
     widgetClassNames?: string;
   };
-  onChange: (value: string|undefined) => void;
-  onBlur?: (value: string) => void;
 };
 
 export default function TextWidget({
@@ -33,11 +31,11 @@ export default function TextWidget({
       name={name || id}
       disabled={disabled}
       maxLength={maxLength}
-      autoComplete={String(autocomplete || false)}
+      autoComplete={autocomplete}
       className={options? options.widgetClassNames : undefined}
       value={value === undefined ? "" : value}
-      onBlur={onBlur ? (() => onBlur(id)) : undefined}
-      onChange={e => onChange(e.target.value || undefined)}
+      onBlur={onBlur ? ((e) => onBlur(id, name, e.target.value || undefined, e)) : undefined}
+      onChange={(e) => onChange(id, name, e.target.value || undefined, e)}
     />
   );
 }

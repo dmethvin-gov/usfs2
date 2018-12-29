@@ -7,10 +7,8 @@ export interface RadioWidgetProps extends BaseWidgetProps {
     enumOptions: { value: string|number; label: string; }[];
     labels?: { [key: string]: string };
     widgetClassNames?: string;
-    autocomplete?: boolean;
     title?: string;
-  }
-  onChange: (value: string|undefined) => void;
+  };
 };
 
 export default function RadioWidget({
@@ -31,13 +29,12 @@ export default function RadioWidget({
           <div className="form-radio-buttons" key={option.value}>
             <input
               type="radio"
-              autoComplete="false"
               checked={checked}
               id={`${id}_${i}`}
               name={`${name || id}`}
               value={option.value}
               disabled={disabled}
-              onChange={_ => onChange(String(option.value))}
+              onChange={(e) => onChange(id, name, e.target.value, e)}
             />
             <label htmlFor={`${id}_${i}`}>
               {labels[option.value] || option.label}

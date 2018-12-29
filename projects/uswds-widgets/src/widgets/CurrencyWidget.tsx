@@ -5,15 +5,12 @@ export interface CurrencyWidgetProps extends BaseWidgetProps {
   value?: number|string;
   options?: {
     widgetClassNames?: string;
-    autocomplete?: boolean;
     title?: string;
   }
-  onBlur: (value: number|string|undefined) => void;
-  onChange: (value: number|string|undefined) => void;
 };
 
 type CurrencyWidgetState = {
-  value: number|string|undefined
+  value: string|undefined
 };
 
 export default class CurrencyWidget extends React.Component<
@@ -22,39 +19,25 @@ export default class CurrencyWidget extends React.Component<
 > {
   constructor(props: CurrencyWidgetProps) {
     super(props);
-    let value = props.value;
-    if (typeof value === "number") {
-      value = value.toFixed(2);
-    }
-    this.state = {
-      value
-    };
-  }
-  onBlur = () => {
-    this.props.onBlur(this.props.id);
-  };
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const val = event.target.value;
-    if (val === "" || typeof val === "undefined") {
-      this.props.onChange(undefined);
+    let value = props.value? Number(props.value) : undefined;
+    if (value !== undefined && isFinite(value)) {
+      this.state = { value: value.toFixed(2) };
     } else {
-      // Needs to look like a currency
-      if (!/^\${0,1}[0-9,]*(\.\d{1,2})?$/.test(val)) {
-        this.props.onChange(val);
-      } else {
-        // Needs to parse as a number
-        const parsed = parseFloat(val.replace(/[^0-9.]/g, ""));
-        if (!isNaN(parsed)) {
-          this.props.onChange(parsed);
-        } else {
-          this.props.onChange(val);
-        }
-      }
+      this.state = { value: undefined };
     }
-    this.setState({ value: val });
+  }
+  onBlur = (e: React.FocusEvent<HTMLInputElement|HTMLSelectElement>) => {
+    this.props.onBlur &&
+      this.props.onBlur(this.props.id, this.props.name, this.state.value, e);
+  };
+  handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+    const value = e.target.value || undefined;
+    this.setState({ value }, () => {
+      this.props.onChange(this.props.id, this.props.name, value, e);
+    });
   };
   render() {
-    const { id, name, disabled, options = {} } = this.props;
+    const { id, name, disabled, autocomplete, options = {} } = this.props;
     const value = this.state.value;
     return (
       <input
@@ -62,9 +45,9 @@ export default class CurrencyWidget extends React.Component<
         id={id}
         name={name || id}
         disabled={disabled}
-        autoComplete={String(options.autocomplete || false)}
+        autoComplete={autocomplete}
         className={options.widgetClassNames}
-        value={typeof value === "undefined" ? "" : value}
+        value={value === undefined ? "" : value}
         onBlur={this.onBlur}
         onChange={this.handleChange}
       />

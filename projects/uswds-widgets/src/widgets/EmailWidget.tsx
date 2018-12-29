@@ -7,5 +7,5 @@ export interface EmailWidgetProps extends TextWidgetProps {};
 export default function EmailWidget(
   props: EmailWidgetProps
 ) {
-  return <TextWidget type="email" {...props} />;
+  return <TextWidget {...props} type="email"/>;
 }

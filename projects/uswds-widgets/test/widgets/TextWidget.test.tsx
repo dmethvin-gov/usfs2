@@ -30,11 +30,11 @@ describe('<TextWidget/>', () => {
     tree.unmount();
   });
   it('should call onChange and onBlur', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe("initial");
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe("initial");
     });
-    const onBlur = jest.fn(v => {
-      expect(v).toBe("test");
+    const onBlur = jest.fn((id, name, value, event) => {
+      expect(value).toBe("initial");
     })
     const tree = mount(
       <TextWidget id="test" value="initial" onChange={onChange} onBlur={onBlur}/>
@@ -47,8 +47,8 @@ describe('<TextWidget/>', () => {
     tree.unmount();
   });
   it('should use undefined for onChange on empty input', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe(undefined);
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe(undefined);
     });
     const tree = mount(
       <TextWidget id="test" onChange={onChange} onBlur={noop}/>

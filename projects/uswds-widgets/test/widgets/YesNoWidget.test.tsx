@@ -11,9 +11,10 @@ describe('<YesNoWidget/>', () => {
     );
     const inputs = tree.find('input[type="radio"]');
     expect(inputs.length).toBe(2);
+    expect(tree.text()).toBe("YesNo");
     // Neither radio should be selected since there was no `value`
     inputs.forEach(i => {
-      expect((i.getDOMNode() as any).checked).toBe(false);
+      expect((i.getDOMNode() as HTMLInputElement).checked).toBe(false);
     });
     tree.unmount();
   });
@@ -22,9 +23,9 @@ describe('<YesNoWidget/>', () => {
       <YesNoWidget id="test" label="label" value={false} onChange={noop}/>
     );
     const falsy = tree.find('input')
-      .filterWhere(i => (i.getDOMNode() as any).checked);
+      .filterWhere(i => (i.getDOMNode() as HTMLInputElement).checked);
     expect(falsy.length).toBe(1);
-    expect((falsy.getDOMNode() as any).value).toBe("N");
+    expect((falsy.getDOMNode() as HTMLInputElement).value).toBe("N");
     tree.unmount();
   });
   it('should reverse value', () => {
@@ -32,36 +33,38 @@ describe('<YesNoWidget/>', () => {
       <YesNoWidget id="test" label="label" value={false} options={{yesNoReverse: true}} onChange={noop}/>
     );
     const falsy = tree.find('input')
-      .filterWhere(i => (i.getDOMNode() as any).checked);
+      .filterWhere(i => (i.getDOMNode() as HTMLInputElement).checked);
     expect(falsy.length).toBe(1);
-    expect((falsy.getDOMNode() as any).value).toBe("Y");
+    expect((falsy.getDOMNode() as HTMLInputElement).value).toBe("Y");
     tree.unmount();
   });
   it('should handle onChange Yes', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe(true);
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe(true);
     });
     const tree = mount(
       <YesNoWidget id="test" label="label" onChange={onChange}/>
     );
-    const first = tree.find("input").first();
-    (first.getDOMNode() as any).click();
-    expect((first.getDOMNode() as any).checked).toBe(true);
-    first.simulate("change");
+    const yes = tree.find("input").first();
+    const yesNode = (yes.getDOMNode() as HTMLInputElement);
+    yesNode.click();
+    expect(yesNode.checked).toBe(true);
+    yes.simulate("change");
     expect(onChange.mock.calls.length).toBe(1);
     tree.unmount();
   });
   it('should handle onChange No', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe(false);
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe(false);
     });
     const tree = mount(
       <YesNoWidget id="test" label="label" onChange={onChange}/>
     );
-    const first = tree.find("input").at(1);
-    (first.getDOMNode() as any).click();
-    expect((first.getDOMNode() as any).checked).toBe(true);
-    first.simulate("change");
+    const no = tree.find("input").at(1);
+    const noNode = (no.getDOMNode() as HTMLInputElement);
+    noNode.click();
+    expect(noNode.checked).toBe(true);
+    no.simulate("change");
     expect(onChange.mock.calls.length).toBe(1);
     tree.unmount();
   });

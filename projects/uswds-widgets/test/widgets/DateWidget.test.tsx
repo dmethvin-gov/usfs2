@@ -29,11 +29,13 @@ describe('<DateWidget/>', () => {
     tree.unmount();
   });
   it('should call onChange and onBlur', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe("2019-02-01");
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(id).toBe("test");
+      expect(value).toBe("2019-02-01");
     });
-    const onBlur = jest.fn(v => {
-      expect(v).toBe("test");
+    const onBlur = jest.fn((id, name, value, event) => {
+      expect(id).toBe("test");
+      expect(value).toBe("2019-02-01");
     })
     const tree = mount(
       <DateWidget id="test" value="2019-02-01" onChange={onChange} onBlur={onBlur}/>
@@ -49,8 +51,8 @@ describe('<DateWidget/>', () => {
     tree.unmount();
   });
   it('should use undefined for onChange on empty input', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe(undefined);
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(value).toBe(undefined);
     });
     const tree = mount(
       <DateWidget id="test" onChange={onChange} onBlur={noop}/>

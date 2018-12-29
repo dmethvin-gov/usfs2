@@ -3,13 +3,10 @@ import { formatISOPartialDate, parseISODate, monthInfo, ISODateParts } from "../
 import { BaseWidgetProps } from "../types";
 
 export interface DateWidgetProps extends BaseWidgetProps {
-  onChange: (value: string|undefined) => void;
-  onBlur: (id: string) => void;
   value?: string;
   options?: {
     monthYear?: boolean;
     widgetClassNames?: string;
-    autocomplete?: boolean;
     title?: string;
   }
 };
@@ -43,26 +40,30 @@ export default class DateWidget extends React.Component<
     super(props);
     this.state = getEmptyState(this.props.value);
   }
-  handleBlur = (field: string) => {
+  //TODO: this is the same as change?
+  handleBlur = (field: string, e: React.FocusEvent<HTMLInputElement|HTMLSelectElement>) => {
     this.setState({ touched: { ...this.state.touched, [field]: true } }, () => {
-      // Validate on blur of a subfield if all subfields have been touched
-      const { year, month, day } = this.state.touched;
-      if ( year && month &&
-          (day || (this.props.options || {}).monthYear) ) {
-        this.props.onBlur(this.props.id);
+      if (this.props.onBlur) {
+        // Validate on blur of a subfield if all subfields have been touched
+        const { year, month, day } = this.state.touched;
+        if ( year && month &&
+            (day || (this.props.options || {}).monthYear) ) {
+          this.props.onBlur(this.props.id, this.props.name, formatISOPartialDate(this.state as ISODateParts), e);
+        }
       }
     });
   }
-  handleChange = (field: string, value: string) => {
+  handleChange = (field: string, e: React.ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
     this.setState(
-      { [field]: value, touched: { ...this.state.touched, [field]: true } },
+      { [field]: e.target.value, touched: { ...this.state.touched, [field]: true } },
       () => {
         if (this.props.required) {
           if ( !this.state.year || !this.state.month || !this.state.day ) {
-            this.props.onChange(undefined);
+            this.props.onChange(this.props.id, this.props.name, undefined, e);
+            return;
           }
         }
-        this.props.onChange(formatISOPartialDate(this.state as ISODateParts));
+        this.props.onChange(this.props.id, this.props.name, formatISOPartialDate(this.state as ISODateParts), e);
       }
     );
   }
@@ -85,7 +86,7 @@ export default class DateWidget extends React.Component<
             name={`${name || id}Month`}
             id={`${id}Month`}
             value={month? month.replace(/^0/,"") : undefined}
-            onChange={event => this.handleChange("month", event.target.value)}
+            onChange={event => this.handleChange("month", event)}
           >
             <option value="" />
             {monthInfo.map((mi) => (
@@ -105,7 +106,7 @@ export default class DateWidget extends React.Component<
               name={`${name || id}Day`}
               id={`${id}Day`}
               value={day? day.replace(/^0/,"") : undefined}
-              onChange={event => this.handleChange("day", event.target.value)}
+              onChange={event => this.handleChange("day", event)}
             >
               <option value="" />
               {daysInMonth &&
@@ -130,8 +131,8 @@ export default class DateWidget extends React.Component<
             min="1900"
             pattern="[0-9]{4}"
             value={year}
-            onBlur={() => this.handleBlur("year")}
-            onChange={event => this.handleChange("year", event.target.value)}
+            onBlur={(event) => this.handleBlur("year", event)}
+            onChange={event => this.handleChange("year", event)}
           />
         </div>
       </div>

@@ -7,10 +7,8 @@ export interface YesNoWidgetProps extends BaseWidgetProps {
     yesNoReverse?: boolean;
     labels?: { Y?: string; N?: string; }
     widgetClassNames?: string;
-    autocomplete?: boolean;
     title?: string;
   }
-  onChange: (value: boolean) => void;
 };
 
 export default function YesNoWidget({
@@ -22,30 +20,27 @@ export default function YesNoWidget({
   options = {}
 }: YesNoWidgetProps) {
   const { yesNoReverse = false, labels = {} } = options;
-  const yesValue = !yesNoReverse;
-  const noValue = !yesValue;
+  const yesBool = !yesNoReverse;
   return (
     <div className="form-radio-buttons">
       <input
         type="radio"
-        autoComplete="false"
-        checked={value === yesValue}
+        checked={value === yesBool}
         id={`${id}Yes`}
         name={name || id}
         value="Y"
         disabled={disabled}
-        onChange={_ => onChange(yesValue)}
+        onChange={(e) => onChange(id, name, yesBool, e)}
       />
       <label htmlFor={`${id}Yes`}>{labels.Y || "Yes"}</label>
       <input
         type="radio"
-        autoComplete="false"
-        checked={value === noValue}
+        checked={value === !yesBool}
         id={`${id}No`}
         name={name || id}
         value="N"
         disabled={disabled}
-        onChange={_ => onChange(noValue)}
+        onChange={(e) => onChange(id, name, !yesBool, e)}
       />
       <label htmlFor={`${id}No`}>{labels.N || "No"}</label>
     </div>

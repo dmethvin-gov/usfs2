@@ -9,7 +9,6 @@ export interface CheckboxWidgetProps extends BaseWidgetProps {
     autocomplete?: boolean;
     title?: string;
   }
-  onChange: (value: boolean|undefined) => void;
 };
 
 export default function CheckboxWidget({
@@ -31,7 +30,7 @@ export default function CheckboxWidget({
         checked={value}
         required={required}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.checked)}/>
+        onChange={(e) => onChange(id, name, e.target.checked, e)}/>
       <label className="schemaform-label" htmlFor={id}>
         {options.title || label}{requiredSpan}
       </label>

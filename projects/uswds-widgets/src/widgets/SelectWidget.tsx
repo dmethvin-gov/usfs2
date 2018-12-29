@@ -8,11 +8,8 @@ export interface SelectWidgetProps extends BaseWidgetProps {
     enumOptions: { value: string|number; label: string }[];
     widgetClassNames?: string;
     labels?: { [name: string]: string };
-    autocomplete?: boolean;
     title?: string;
-  }
-  onBlur: (id: string) => void;
-  onChange: (value: string|undefined) => void;
+  };
 };
 
 function getValue(event: React.ChangeEvent<HTMLSelectElement>, multiple?: boolean) {
@@ -48,8 +45,8 @@ export default function SelectWidget({
       value={value}
       required={required}
       disabled={disabled}
-      onBlur={e => onBlur(id)}
-      onChange={e => onChange(getValue(e, multiple))}
+      onBlur={onBlur? ((e) => onBlur(id, name, getValue(e, multiple), e)) : undefined}
+      onChange={(e) => onChange(id, name, getValue(e, multiple), e)}
     >
       {!value && <option value="">{placeholder}</option>}
       {enumOptions.map((option, i) => {

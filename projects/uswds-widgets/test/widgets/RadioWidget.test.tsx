@@ -75,8 +75,9 @@ describe('<RadioWidget/>', () => {
     tree.unmount();
   });
   it('should call onChange', () => {
-    const onChange = jest.fn(v => {
-      expect(v).toBe("2");
+    const onChange = jest.fn((id, name, value, event) => {
+      expect(id).toBe("test");
+      expect(value).toBe("2");
     });
     const tree = mount(
       <RadioWidget id="test" onChange={onChange}

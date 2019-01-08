@@ -1,11 +1,11 @@
 {
-  "name": "uswds-widgets",
+  "name": "usfs-react-gen",
   "version": "0.0.0",
   "description": "",
   "keywords": [],
-  "main": "dist/uswds-widgets.umd.js",
-  "module": "dist/uswds-widgets.es5.js",
-  "typings": "dist/types/uswds-widgets.d.ts",
+  "main": "dist/usfs-react-gen.umd.js",
+  "module": "dist/usfs-react-gen.es5.js",
+  "typings": "dist/types/usfs-react-gen.d.ts",
   "files": [
     "dist"
   ],
@@ -70,9 +70,9 @@
   "devDependencies": {
     "@commitlint/cli": "^7.1.2",
     "@commitlint/config-conventional": "^7.1.2",
-    "@types/classnames": "^2.2.6",
+    "@types/classnames": "^2.2.7",
     "@types/enzyme": "^3.1.15",
-    "@types/jest": "^23.3.2",
+    "@types/jest": "^23.3.12",
     "@types/node": "^10.11.0",
     "@types/react-dom": "^16.0.9",
     "colors": "^1.3.2",

@@ -1,12 +1,12 @@
-import { FieldAction, FieldContext, FieldPropertyName } from '../types'
+import { FieldAction, FieldContext } from '../types'
 
 export interface ValidatorFunction {
   (value: string, options: any): boolean
 }
 
 export const makeValidator = function(criteria: ValidatorFunction, defaultMessage?: string) {
-  return <FieldAction>function(context, options, message) {
-    const value = context.getProperty(FieldPropertyName.value)
+  return function({ context, options, message }: FieldAction) {
+    const value = context.getProperty('value')
     const valid = criteria(value, options)
     if (!valid) {
       context.addError(options.message || defaultMessage, options)

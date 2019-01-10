@@ -1,13 +1,13 @@
-import { FieldAction, FieldContext, FieldPropertyName } from '../types'
+import { FieldAction, FieldContext } from '../types'
 
 export interface FormatterFunction {
   (value: string, options: any): string
 }
 
 export const makeFormatter = function(formatter: FormatterFunction) {
-  return <FieldAction>function(context, options, message) {
-    const value = context.getProperty(FieldPropertyName.value)
-    context.setProperty(FieldPropertyName.value, formatter(value, options))
+  return function({ context, options, message }: FieldAction) {
+    const value = context.getProperty('value')
+    context.setProperty('value', formatter(value, options))
     return true
   }
 }

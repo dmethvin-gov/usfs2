@@ -1,41 +1,29 @@
-import { ReactNode } from 'react'
+export type ActionEvent = 'input' | 'change' | 'focus' | 'blur' | 'submit' | 'trigger'
+export const actionEvents = ['input', 'change', 'focus', 'blur', 'submit', 'trigger']
 
-export enum InvocationEvent {
-  input = 'input',
-  change = 'change',
-  focus = 'focus',
-  blur = 'blur',
-  submit = 'submit',
-  manual = 'manual'
-}
+export type FieldPropertyName =
+  | 'value'
+  | 'readonly'
+  | 'maxlength'
+  | 'disabled'
+  | 'hidden'
+  | 'required'
+export const fieldPropertyNames = [
+  'value',
+  'readonly',
+  'maxlength',
+  'disabled',
+  'hidden',
+  'required'
+]
 
-// API for these functions need to allow calls to
-// change the form, e.g. show fields or errors
-
-// typically for validation/formatting functions
-// onInput: [
-//  [ "filterOut", "[^0-9\\.\\-]" ]
-// ]
-// onChange: [
-//  [ "isInteger", null, "Must be integer!" ],
-//  [ "isBetween", {min: 1, max: 1000}, "Must be between ${min} and ${max}" ],
-//  [ "isMyCustomValidatorWithNoOptions", null, "Validation failed" ],
-//  [ "formatNumber", "dddd" ]
-// ]
-export interface FieldActionJSON {
-  action: string //located using component paths
-  options?: any // passed as a single arg to the action
-  message?: string // most handy for error messages
-  invocation?: InvocationEvent // default "change"
-}
-
-export enum FieldPropertyName {
-  value = 'value',
-  readonly = 'readonly',
-  maxlength = 'maxlength',
-  disabled = 'disabled',
-  visible = 'visible',
-  required = 'required'
+export interface FieldProperties {
+  value?: string
+  readonly?: boolean
+  maxlength?: number
+  disabled?: boolean
+  hidden?: boolean
+  required?: boolean
 }
 
 export interface FieldContext {
@@ -49,20 +37,10 @@ export interface FieldContext {
 }
 
 export interface FieldAction {
-  (context: FieldContext, options?: any, message?: string, invocation?: InvocationEvent): void
-}
-
-// typically for fieldIf functions
-//  showIf, readonlyIf, errorIf
-// dependencies: [
-//  [ "showIf", "sameAsBilling", false ]
-// ]
-export interface FieldDependencyJSON {
-  check: string //located using component paths
-  fields: string | string[] // array of dependent fieldNames to look up
-  options?: any // passed as a single arg to the action
+  context: FieldContext
+  options?: any
   message?: string
-  invocation?: InvocationEvent // on the fields, NOT US
+  event?: ActionEvent
 }
 
 export interface DependentFieldItem {
@@ -71,42 +49,27 @@ export interface DependentFieldItem {
 }
 
 export interface FieldDependency {
-  (
-    context: FieldContext,
-    fields: DependentFieldItem[],
-    options?: any,
-    message?: string,
-    invocation?: InvocationEvent
-  ): void
+  context: FieldContext
+  fields: DependentFieldItem[]
+  options?: any
+  message?: string
+  event?: ActionEvent
 }
 
-// fieldName: { FieldDefinitionJSON }
-export interface FieldDefinitionJSON {
-  widget: string // a widget or field definition
-  name: string
-  label?: string
-  value?: string
-  wrapper?: string
-  actions?: []
-  children: any[]
-  options?: {
-    [optionName: string]: any
-  }
-}
-
-export interface FieldDefinition {
-  widget: ReactNode
-  wrapper: ReactNode
-  name: string
-  id: string
+export interface WidgetDefinition {
+  widget: {} // becomes a React node
+  wrapper: {} // becomes a React node
   options: {
     [optionName: string]: any
   }
   label?: string
   value?: string
-  actions?: FieldAction[]
+  actions: FieldAction[]
   dependencies: FieldDependency[]
-  children?: FieldDefinition[]
+  children: FieldDefinition[]
 }
 
-export interface ComponentPath {}
+export interface FieldDefinition extends WidgetDefinition {
+  id: string
+  name: string
+}

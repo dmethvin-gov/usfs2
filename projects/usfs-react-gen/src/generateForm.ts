@@ -1,5 +1,6 @@
 import {
   WidgetDefinition,
+  WidgetComponents,
   FieldDefinition,
   FieldAction,
   FieldDependency,
@@ -7,6 +8,7 @@ import {
   actionEvents
 } from './types'
 import { ReactNode } from 'react'
+import { join as joinPath } from 'path'
 
 // typically for validation/formatting functions
 //  [ "input", "filterOut", "[^0-9\\.\\-]" ]
@@ -39,6 +41,19 @@ export type FieldDependencyJSON =
     }
   | [string, string | string[], any?, string?]
 
+export type WidgetDefinitionJSON = {
+  widget: string
+  label?: string
+  value?: string
+  options?: {
+    [optionName: string]: any
+  }
+  wrapper?: string
+  actions?: []
+  dependencies?: []
+  children?: any[]
+}
+
 // fieldName: { FieldDefinitionJSON }
 export type FieldDefinitionJSON =
   | {
@@ -60,54 +75,130 @@ export interface ComponentPathJSON {
   //TODO: TBD
   path?: string
 }
-//----------
+//----------------------------------------------
 
-// TEMP
-parseForm([
-  {
-    widget: 'Text',
-    name: 'first',
-    label: 'First Name'
+// TODO: allow clearing caches and reparsing
+
+const widgetCache: { [widget: string]: WidgetDefinition } = {}
+const widgetExtension = '.widget.json'
+const widgetPaths = ['./widgets/', 'node_modules/']
+
+function findWidget(widget: string, ext: string, paths: string[]) {
+  if (Object.hasOwnProperty.call(widgetCache, widget)) {
+    return widgetCache[widget]
   }
-])
-
-let idnumber = 1
-
-function resolveWidget(widget: string) {
-  if (!widget) {
-    throw 'Widget must be specified'
-  }
-  // map widget name to physical widget code (TODO have a cache?)
-  //  -- this can be recursive and set other properties
-  // should all widgets just be JSON files and at some point have "component"?
-  // maybe widget field can provide the shim layer for widget libs?
-  return <WidgetDefinition>{
-    id: '',
-    widget: {
-      component: `./widgets/${widget}`
-    },
-    wrapper: resolveWrapper(),
+  // TODO: locate widget JSON via path search
+  // the widget field names THIS widget???
+  // the component field names either another widget or code
+  const widgetJSON: WidgetDefinitionJSON = {
+    widget: 'barf',
     options: {},
     actions: [],
     dependencies: [],
     children: []
   }
+
+  const final: WidgetDefinition = {
+    /*
+    using: {
+      widget: {
+        path: "./src/widgets/Text"
+      },
+      component: {
+        path: "materialui/dist/controls/StateSelect",
+        shim: "./src/shims/materialui",
+        settings: {}
+      },
+      wrapper: {
+        path: "./src/wrappers/standard"
+      }
+    }
+    */
+    widget: widgetJSON.widget,
+    label: widgetJSON.label || '',
+    value: widgetJSON.value,
+    wrapper: widgetJSON.wrapper || 'default',
+    resolvedWrapper: resolveWrapper(widgetJSON.wrapper),
+    options: { ...widgetJSON.options },
+    actions: [...parseActions(widgetJSON.actions)],
+    dependencies: [...parseDependencies(widgetJSON.dependencies)],
+    children: (widgetJSON.children || []).map(parseField)
+  }
+  return <WidgetDefinition>{}
+}
+
+function findComponent(component: string, ext: string, paths: string[]) {
+  return null
+}
+
+function resolveWidgetToDefinition(widget: string) {
+  if (!widget) {
+    throw 'Widget must be specified'
+  }
+
+  // loop through widget definitions and combine them
+  const final: WidgetDefinition = {
+    widget: widget,
+    resolvedWidget: <WidgetComponents>{ components: [] },
+    wrapper: 'default',
+    resolvedWrapper: <WidgetComponents>{ components: [] },
+    options: {},
+    actions: [],
+    dependencies: [],
+    children: []
+  }
+
+  for (
+    let defn = final;
+    defn; //TODO what is the exit criteria?
+    defn = findWidget(defn.widget, widgetExtension, widgetPaths)
+  ) {
+    //TODO remember widget resolution path
+    if (defn.label) {
+      final.label = defn.label
+    }
+    if (defn.value) {
+      final.value = defn.value
+    }
+    if (defn.wrapper) {
+      final.wrapper = defn.wrapper
+      // we could defer this but would miss errors with unresolved wrappers
+      final.resolvedWrapper = resolveWrapper(defn.wrapper)
+    }
+    // Note: Shallow merges, do we need deep one for options?
+    //TODO: is Object.merge (IE11!) better because it uses existing object?
+    ;(final.options = { ...final.options, ...defn.options }),
+      (final.actions = [...final.actions, ...defn.actions]),
+      (final.dependencies = [...final.dependencies, ...defn.dependencies])
+  }
+
+  //TODO     resolvedWidget: defn.resolvedWidget,
+
+  // maybe widget field can provide the shim layer for widget libs?
+  widgetCache[widget] = final
+  return final
 }
 
 function resolveWrapper(wrapper?: string) {
   return {
-    component: `./wrappers/${wrapper}`
+    components: [`./wrappers/${wrapper}`]
   }
 }
 
 function resolveAction(action: string) {
   //TODO: how to manage actions based on actions
   return {
-    component: `./actions/${action}`
+    components: [`./actions/${action}`]
   }
 }
 
-function parseActions(actionsJSON: FieldActionJSON[]) {
+function parseActions(actionsJSON: FieldActionJSON[] | undefined) {
+  if (!actionsJSON) {
+    return []
+  }
+  if (!Array.isArray(actionsJSON)) {
+    throw 'Actions must be an array'
+  }
   return <FieldAction[]>actionsJSON.map(entry => {
     if (Array.isArray(entry)) {
       entry = {
@@ -133,7 +224,13 @@ function parseActions(actionsJSON: FieldActionJSON[]) {
   })
 }
 
-function parseDependencies(depsJSON: FieldDependency[]) {
+function parseDependencies(depsJSON: FieldDependency[] | undefined) {
+  if (!depsJSON) {
+    return []
+  }
+  if (!Array.isArray(depsJSON)) {
+    throw 'Dependencies must be an array'
+  }
   //TODO
   return <FieldDependency[]>[]
 }
@@ -152,18 +249,20 @@ function parseField(fieldJSON: FieldDefinitionJSON) {
   }
 
   const fieldId = `id${('000' + fieldid++).substr(-4)}`
-  const widget = resolveWidget(fieldJSON.widget)
+  const defn = resolveWidgetToDefinition(fieldJSON.widget)
   const field: FieldDefinition = {
     id: fieldId,
     name: fieldJSON.name || fieldId,
-    widget: widget,
+    widget: fieldJSON.widget,
+    resolvedWidget: defn.resolvedWidget,
     label: fieldJSON.label || '',
     value: fieldJSON.value,
-    wrapper: widget.wrapper || resolveWrapper(fieldJSON.wrapper || 'default'),
-    options: { ...widget.options, ...fieldJSON.options },
-    actions: [...widget.actions, ...parseActions(fieldJSON.actions || [])],
-    dependencies: [...widget.dependencies, ...parseDependencies(fieldJSON.dependencies || [])],
-    children: [...widget.children, ...(fieldJSON.children || []).map(parseField)]
+    wrapper: fieldJSON.wrapper || defn.wrapper,
+    resolvedWrapper: fieldJSON.wrapper ? resolveWrapper(fieldJSON.wrapper) : defn.resolvedWrapper,
+    options: { ...defn.options, ...fieldJSON.options },
+    actions: [...defn.actions, ...parseActions(fieldJSON.actions || [])],
+    dependencies: [...defn.dependencies, ...parseDependencies(fieldJSON.dependencies || [])],
+    children: [...defn.children, ...(fieldJSON.children || []).map(parseField)]
   }
   return field
 }
@@ -174,6 +273,7 @@ export default function parseForm(
     widgets?: FieldDefinitionJSON[]
     paths?: ComponentPathJSON[]
     actions?: FieldActionJSON[]
+    dependencies?: FieldDependencyJSON[]
     logLevel?: number
   }
 ) {

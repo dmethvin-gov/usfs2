@@ -56,9 +56,16 @@ export interface FieldDependency {
   event?: ActionEvent
 }
 
+export interface WidgetComponents {
+  // Paths to react components, css, script, whatever
+  components: string[]
+}
+
 export interface WidgetDefinition {
-  widget: {} // becomes a React node
-  wrapper: {} // becomes a React node
+  widget: string
+  resolvedWidget?: WidgetComponents
+  wrapper: string
+  resolvedWrapper?: WidgetComponents
   options: {
     [optionName: string]: any
   }
